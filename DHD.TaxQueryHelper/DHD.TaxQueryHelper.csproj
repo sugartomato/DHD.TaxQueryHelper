@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationIcon>Icon_169.ico</ApplicationIcon>
+    <BaseOutputPath>D:\DHD\GitHub\ProjectRelease\DHD.TaxQueryHelper</BaseOutputPath>
+    <Authors>DHD</Authors>
+    <Company>DHD</Company>
+    <Product>发票查验辅助工具</Product>
+    <Description>发票查验辅助工具，辅助截图</Description>
+    <AssemblyVersion>1.2</AssemblyVersion>
+    <FileVersion>1.2</FileVersion>
+    <Version>1.2</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Icon_169.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1150.38" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="关于.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

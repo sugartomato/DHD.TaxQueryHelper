@@ -1,0 +1,224 @@
+﻿<Window x:Class="DHD.TaxQueryHelper.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DHD.TaxQueryHelper"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        mc:Ignorable="d"
+        Title="发票查验辅助 - 海东工具" Height="800" Width="800"
+        WindowState="Maximized">
+
+    <Window.Resources>
+        <Style x:Key="ButtonStyle1" TargetType="Button">
+            <Setter Property="Margin" Value="2,2,0,2"></Setter>
+            <Setter Property="Padding" Value="1"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="Height" Value="30"></Setter>
+            <Setter Property="Width" Value="100"></Setter>
+            <Setter Property="Foreground" Value="DarkBlue"></Setter>
+            <Setter Property="FontSize" Value="13"></Setter>
+        </Style>
+
+        <Style x:Key="ButtonSetpStyle" TargetType="Button" BasedOn="{StaticResource ButtonStyle1}">
+            <Setter Property="Height" Value="35"></Setter>
+            <Setter Property="Background" Value="LightGreen"></Setter>
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+            <Setter Property="FontSize" Value="18"></Setter>
+            <Setter Property="FontFamily" Value="黑体"></Setter>
+            <Setter Property="Width" Value="200"></Setter>
+            <Setter Property="Height" Value="45"></Setter>
+        </Style>
+
+        <Style x:Key="TextBoxStyle1" TargetType="TextBox">
+            <Setter Property="Margin" Value="2,0,0,0"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Height" Value="30"></Setter>
+            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+        </Style>
+
+        <Style x:Key="TitleTextStyle1" TargetType="TextBlock">
+            <Setter Property="Margin" Value="2,0,0,0"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Foreground" Value="DarkBlue"></Setter>
+        </Style>
+
+        <Style x:Key="NoteTextStyle" TargetType="TextBlock">
+            <Setter Property="Margin" Value="2,0,0,0"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Foreground" Value="DarkGreen"></Setter>
+        </Style>
+
+        <Style x:Key="SelectStyle1" TargetType="ComboBox">
+            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="2,0,0,0"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Height" Value="30"></Setter>
+        </Style>
+        <RoutedCommand x:Key="fill"></RoutedCommand>
+        <RoutedCommand x:Key="query"></RoutedCommand>
+        <RoutedCommand x:Key="save"></RoutedCommand>
+    </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="{StaticResource fill}" Executed="CommandBinding_FillInput"></CommandBinding>
+        <CommandBinding Command="{StaticResource query}" Executed="CommandBinding_Query"></CommandBinding>
+        <CommandBinding Command="{StaticResource save}" Executed="CommandBinding_Caputre"></CommandBinding>
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Gesture="Alt+F" Command="{StaticResource fill}"></KeyBinding>
+        <KeyBinding Gesture="Alt+Q" Command="{StaticResource query}"></KeyBinding>
+        <KeyBinding Gesture="Alt+S" Command="{StaticResource save}"></KeyBinding>
+    </Window.InputBindings>
+    
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="400"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <DockPanel Grid.Row="0">
+                <Button Width="100" Click="OnClick_OpenDev" DockPanel.Dock="Right" Style="{StaticResource ButtonStyle1}">调试工具</Button>
+                <Button Width="100" Click="OnClick_Go" DockPanel.Dock="Right" Style="{StaticResource ButtonStyle1}">打开</Button>
+                <TextBox Name="CTRL_URL" Height="30" Margin="0,5,0,5" Style="{StaticResource TextBoxStyle1}"></TextBox>
+
+            </DockPanel>
+           
+            <DockPanel Grid.Row="1">
+                <Border BorderThickness="1" BorderBrush="LightBlue" x:Name="CTRL_BrowserContainer">
+                    <wv2:WebView2 Name="CTRL_MainBrowser" Source="https://inv-veri.chinatax.gov.cn/"></wv2:WebView2>
+                </Border>
+            </DockPanel>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <!--基础信息录入区-->
+                <RowDefinition Height="200"></RowDefinition>
+                <!--校验码区域-->
+                <RowDefinition Height="Auto"></RowDefinition>
+                <!--截图操作-->
+                <RowDefinition Height="Auto"></RowDefinition>
+                <!--其它区域-->
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35"></RowDefinition>
+                    <RowDefinition Height="35"></RowDefinition>
+                    <RowDefinition Height="35"></RowDefinition>
+                    <RowDefinition Height="35"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource TitleTextStyle1}">发票代码</TextBlock>
+                <DockPanel Grid.Row="0" Grid.Column="1">
+                    <Button x:Name="CTRL_BTN_SaveFPDM" Click="OnClick_AddFPDMToConfig" DockPanel.Dock="Right" Style="{StaticResource ButtonStyle1}">保存到常用</Button>
+                    <ComboBox Name="CTRL_FPDM" IsEditable="True" Style="{StaticResource SelectStyle1}"></ComboBox>
+                </DockPanel>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource TitleTextStyle1}">发票号码</TextBlock>
+                <TextBox Name="CTRL_TXT_FPHM" Grid.Row="1" Grid.Column="1" Style="{StaticResource TextBoxStyle1}"></TextBox>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource TitleTextStyle1}">开票日期</TextBlock>
+                <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+                    <TextBox Name="CTRL_TXT_KPRQ" Width="100"  Style="{StaticResource TextBoxStyle1}"></TextBox>
+                    <DatePicker Name="CTRL_PickDate" SelectedDateChanged="OnChange_SelectDateKPRQ" Margin="5,0,0,0" VerticalContentAlignment="Center" VerticalAlignment="Center" Height="30"></DatePicker>
+                </StackPanel>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" TextWrapping="Wrap" Style="{StaticResource TitleTextStyle1}">金额/校验码</TextBlock>
+                <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+                    <TextBox Name="CTRL_TXT_KPJE" Width="100" Style="{StaticResource TextBoxStyle1}"></TextBox>
+                    <TextBlock TextWrapping="Wrap"  Style="{StaticResource NoteTextStyle}">专票填不含税金额，普票填校验码后六位</TextBlock>
+                </StackPanel>
+
+
+                <Button x:Name="CTRL_BTN_Fill" Grid.Row="4" Grid.ColumnSpan="2" Click="OnClick_FillInput" Style="{StaticResource ButtonSetpStyle}" Command="{StaticResource fill}">①填充(ALT+F)</Button>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource TitleTextStyle1}">校验码：</TextBlock>
+                    <TextBox Name="CTRL_VerCode" Width="100" Style="{StaticResource TextBoxStyle1}"></TextBox>
+                    <Button Name="CTRL_BTN_RefreshVercode" Click="OnClick_RefreshVerCode" Style="{StaticResource ButtonStyle1}">刷新</Button>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <Button Click="OnClick_Query"  Style="{StaticResource ButtonSetpStyle}">②查询(ALT+Q)</Button>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Border BorderThickness="1" Margin="2,10,2,0" BorderBrush="LightBlue">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"></RowDefinition>
+                            <RowDefinition Height="35"></RowDefinition>
+                            <RowDefinition Height="40"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBox Grid.Row="0" Background="LightBlue" Style="{StaticResource TextBoxStyle1}" Margin="0" Padding="0" Name="CTRL_Step3Title">截图保存</TextBox>
+                        <DockPanel Grid.Row="1">
+                            <Button x:Name="CTRL_BTN_AddBookmark" Click="OnClick_AddToBookmark" DockPanel.Dock="Right" Style="{StaticResource ButtonStyle1}" Width="70">添加到书签</Button>
+                            <Button x:Name="CTRL_BTN_OpenInExplorer" Click="OnClick_OpenInExplorer" DockPanel.Dock="Right"  Style="{StaticResource ButtonStyle1}" >打开文件夹</Button>
+                            <Button x:Name="CTRL_BTN_BrowserFolder" Click="OnClick_SelectSaveFolder" DockPanel.Dock="Left" Style="{StaticResource ButtonStyle1}" Width="70">浏览..</Button>
+                        </DockPanel>
+                        <DockPanel Grid.Row="2">
+                            <ComboBox Name="CTRL_SELECT_SavePath" IsEditable="True" DisplayMemberPath="DisplayName" SelectedValuePath="Path" Style="{StaticResource SelectStyle1}"></ComboBox>
+                        </DockPanel>
+                        <StackPanel Orientation="Horizontal" Grid.Row="3">
+                            <Button Click="OnClick_CaptureAndSave" Style="{StaticResource ButtonSetpStyle}">③截图保存(ALT+S)</Button>
+                            <Button Click="OnClick_SaveTaxInfo"  Style="{StaticResource ButtonStyle1}" Width="Auto" Margin="10">④保存发票信息</Button>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <Grid Grid.Row="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <DockPanel Grid.Row="1">
+                    <Button x:Name="CTRL_BTN_RunScript" DockPanel.Dock="Right" Style="{StaticResource ButtonStyle1}" Height="Auto" Click="OnClick_RunScript">运行脚本</Button>
+                    <TextBox Name="CTRL_TXT_Script"></TextBox>
+                </DockPanel>
+
+                <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto">
+                    <DockPanel Width="Auto">
+                        <StackPanel Orientation="Horizontal">
+                            <RichTextBox x:Name="CTRL_Console" Height="Auto" Width="380">
+                            </RichTextBox>
+                        </StackPanel>
+                    </DockPanel>
+                </ScrollViewer>
+                
+            </Grid>
+        </Grid>
+
+        
+        
+    </Grid>
+</Window>

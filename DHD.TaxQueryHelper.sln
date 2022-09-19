@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32113.165
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DHD.TaxQueryHelper", "DHD.TaxQueryHelper\DHD.TaxQueryHelper.csproj", "{24A6DAA1-DA55-4157-A8E1-94167746AC1D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{24A6DAA1-DA55-4157-A8E1-94167746AC1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24A6DAA1-DA55-4157-A8E1-94167746AC1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24A6DAA1-DA55-4157-A8E1-94167746AC1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24A6DAA1-DA55-4157-A8E1-94167746AC1D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E9374C32-0150-4677-824E-F6BB629F8851}
+	EndGlobalSection
+EndGlobal

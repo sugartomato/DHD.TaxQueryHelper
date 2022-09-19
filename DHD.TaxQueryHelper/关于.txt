@@ -1,0 +1,16 @@
+﻿运行环境需求：
+	.Net 6运行时，.NET Desktop Runtime
+		https://dotnet.microsoft.com/en-us/download/dotnet/6.0
+		
+	Webview2运行时，使用Evergreen版
+		https://developer.microsoft.com/en-us/microsoft-edge/webview2/#download-section
+
+	生成模式为AnyCPU，因此需要保留生成目录下的runtime文件夹下的内容
+	涉及权限问题，系统目录（例如Program Files），需要管理员运行，非系统目录（例如放在D盘），直接运行即可。
+
+
+操作记录
+	20220331
+		创建项目，完成基本功能
+	20220411
+		增加发票查询结果的信息保存到文本的功能
